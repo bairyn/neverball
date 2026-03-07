@@ -57,6 +57,8 @@ int   game_can_forfeit(void);
 int   game_has_forced(void);
 void  game_forfeit(void);
 
+void  game_set_fast(int);
+
 /*---------------------------------------------------------------------------*/
 
 #endif
