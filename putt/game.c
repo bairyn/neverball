@@ -63,6 +63,8 @@ static float putt_t;                    /* Current player putt time elapsed  */
 static int   has_forfeited;             /* Has the current player forfeited? */
 static int   has_auto_forf;             /* Was there an auto-forfeiture?     */
 
+static int   fast_timescale;            /* Whether fast-timescale mode is on */
+
 /*---------------------------------------------------------------------------*/
 
 static void view_init(void)
@@ -535,6 +537,15 @@ int game_step(const float g[3], float dt)
     if (!state)
         return GAME_NONE;
 
+    if (config_cheat())
+    {
+        if (fast_timescale)
+        {
+            /* Apply timescale when shift is pressed down. */
+            dt *= 3.0f;
+        }
+    }
+
     s = (7.f * s + dt) / 8.f;
     t = s;
 
@@ -790,6 +801,18 @@ void game_forfeit(void)
         /* Forfeit the ball. */
 
         hole_time();
+    }
+}
+
+void game_set_fast(int d)
+{
+    if (!config_cheat())
+    {
+        fast_timescale = 0;
+    }
+    else
+    {
+        fast_timescale = d;
     }
 }
 
